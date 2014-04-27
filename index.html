@@ -32,8 +32,10 @@
         authButton.style.display = 'none';
         scanDrive.style.display = 'none';
         if (authResult && !authResult.error) {
-          // Access token has been successfully retrieved, requests can be sent to the API.
-            scanDrive.style.display = 'block';
+            // Access token has been successfully retrieved, requests can be sent to the API.
+            gapi.client.load('drive', 'v2', function () {
+                scanDrive.style.display = 'block';
+            });
             scanDrive.onclick = function () {
                 retrieveAllFiles(function (files) {
                     console.log(files);
