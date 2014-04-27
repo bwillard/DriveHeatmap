@@ -39,11 +39,29 @@
             scanDrive.onclick = function () {
                 var quotaBytes = 0;
                 var parents = [];
+                var root;
                 retrieveAllFiles(function (files) {
-                    $.each(files, function( index, file ){
-                        quotaBytes += file.quotaBytesUsed;
+                    $.each(files, function( index, file ) {
+                        quotaBytes += Number(file.quotaBytesUsed);
+                        var parentId = parents[0].id;
+                        if (!parents[parentId]) {
+                            parents[parentId] = [];
+                            if (parents[0].isRoot) {
+                                root = parentId;
+                            }
+                        }
+                        parents[parentId].push({ id: file.id, size: Number(file.quotaBytesUsed) });
                     });
+                    var tree = [{ id: root, children: [] }];
+                    var lastAdded = [root];
+                    do {
+                        var thisLevel = [];
+                        $.each(lastAdded, function (index, file) {
+                        });
+                        lastAdded = thisLevel;
+                    } while (lastAdded.length > 0);
                     log('got ' + files.length + ' files, with total qutoa used: ' + quotaBytes);
+                    log('root ' + root);
                     console.log(files[0]);
                 });
             }
