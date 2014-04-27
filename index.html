@@ -43,7 +43,7 @@
                 retrieveAllFiles(function (files) {
                     $.each(files, function( index, file ) {
                         quotaBytes += Number(file.quotaBytesUsed);
-                        var parentId = parents[0].id;
+                        var parentId = file.parents[0].id;
                         if (!parents[parentId]) {
                             parents[parentId] = [];
                             if (parents[0].isRoot) {
