@@ -46,7 +46,7 @@
                         var parentId = file.parents[0].id;
                         if (!parents[parentId]) {
                             parents[parentId] = [];
-                            if (parents[0].isRoot) {
+                            if (file.parents[0].isRoot) {
                                 root = parentId;
                             }
                         }
