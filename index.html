@@ -37,12 +37,14 @@
                 scanDrive.style.display = 'block';
             });
             scanDrive.onclick = function () {
-                var qutoaBytes = 0;
+                var quotaBytes = 0;
+                var parents = [];
                 retrieveAllFiles(function (files) {
                     $.each(files, function( index, file ){
-                        qutoaBytes += file.qutoaBytesUsed;
+                        quotaBytes += file.quotaBytesUsed;
                     });
-                    log('got ' + files.length + ' files, with total qutoa used: ' + qutoaBytes);
+                    log('got ' + files.length + ' files, with total qutoa used: ' + quotaBytes);
+                    console.log(files[0]);
                 });
             }
         } else {
