@@ -34,6 +34,11 @@
         if (authResult && !authResult.error) {
           // Access token has been successfully retrieved, requests can be sent to the API.
             scanDrive.style.display = 'block';
+            scanDrive.onclick = function () {
+                retrieveAllFiles(function (files) {
+                    console.log(files);
+                });
+            }
         } else {
           // No access token could be retrieved, show the button to start the authorization flow.
           authButton.style.display = 'block';
@@ -68,10 +73,6 @@
         var initialRequest = gapi.client.drive.files.list();
         retrievePageOfFiles(initialRequest, []);
     }
-
-    retrieveAllFiles(function (files) {
-        console.log(files);
-    });
     </script>
     <script type="text/javascript" src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
   </head>
