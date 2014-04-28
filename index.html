@@ -43,17 +43,12 @@
                 retrieveAllFiles(function (files) {
                     $.each(files, function( index, file ) {
                         quotaBytes += Number(file.quotaBytesUsed);
-                        if (file.parents == null || file.parents.length == 0) {
-                            console.log("empty parent root:" + file.id);
-                            console.log(file);
-                            rootId = file.id;
-                        } else {
+                        if (file.parents != null && file.parents.length > 0) {
                             var parentId = file.parents[0].id;
                             if (!parents[parentId]) {
                                 parents[parentId] = [];
                                 if (file.parents[0].isRoot) {
-                                    console.log("isRoot root:" + parentId);
-                                    console.log(file);
+                                    rootId = parentId;
                                 }
                             }
                             parents[parentId].push({ id: file.id, size: Number(file.quotaBytesUsed), children: [], title: file.title });
@@ -105,7 +100,8 @@
                 if (nextPageToken) {
                     request = gapi.client.drive.files.list({
                         'pageToken': nextPageToken,
-                        'maxResults': 1000
+                        'maxResults': 1000,
+                        'q': '!sharedWithMe '
                     });
                     log('making call with ' + result.length + 'items fetched, page token: ' + nextPageToken);
                     retrievePageOfFiles(request, result);
@@ -115,7 +111,8 @@
             });
         }
         var initialRequest = gapi.client.drive.files.list({
-            'maxResults': 1000
+            'maxResults': 1000,
+            'q': '!sharedWithMe '
         });
         retrievePageOfFiles(initialRequest, []);
     }
