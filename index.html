@@ -43,14 +43,15 @@
                 retrieveAllFiles(function (files) {
                     $.each(files, function( index, file ) {
                         quotaBytes += Number(file.quotaBytesUsed);
-                        var parentId = file.parents[0].id;
-                        if (!parents[parentId]) {
-                            parents[parentId] = [];
-                            if (file.parents[0].isRoot) {
-                                root = parentId;
+                        if (file.parents == null || file.parents.length == 0) {
+                            root = file.id;
+                        } else {
+                            var parentId = file.parents[0].id;
+                            if (!parents[parentId]) {
+                                parents[parentId] = [];
                             }
+                            parents[parentId].push({ id: file.id, size: Number(file.quotaBytesUsed) });
                         }
-                        parents[parentId].push({ id: file.id, size: Number(file.quotaBytesUsed) });
                     });
                     var tree = [{ id: root, children: [] }];
                     var lastAdded = [root];
