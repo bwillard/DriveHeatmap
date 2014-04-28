@@ -39,31 +39,38 @@
             scanDrive.onclick = function () {
                 var quotaBytes = 0;
                 var parents = [];
-                var root;
+                var rootId;
                 retrieveAllFiles(function (files) {
                     $.each(files, function( index, file ) {
                         quotaBytes += Number(file.quotaBytesUsed);
                         if (file.parents == null || file.parents.length == 0) {
-                            root = file.id;
+                            rootId = file.id;
                         } else {
                             var parentId = file.parents[0].id;
                             if (!parents[parentId]) {
                                 parents[parentId] = [];
                             }
-                            parents[parentId].push({ id: file.id, size: Number(file.quotaBytesUsed) });
+                            parents[parentId].push({ id: file.id, size: Number(file.quotaBytesUsed), children: [], title: file.title });
                         }
                     });
-                    var tree = [{ id: root, children: [] }];
+                    var root = { id: rootId, children: [] };
                     var lastAdded = [root];
                     do {
                         var thisLevel = [];
-                        $.each(lastAdded, function (index, file) {
+                        $.each(lastAdded, function (index, parent) {
+                            if (parents[parent.id]) {
+                                $.each(parents[parent.id], function (index2, file) {
+                                    thisLevel.push(file);
+                                    parent.children.push(file);
+                                });
+                            }
                         });
                         lastAdded = thisLevel;
                     } while (lastAdded.length > 0);
                     log('got ' + files.length + ' files, with total qutoa used: ' + quotaBytes);
                     log('root ' + root);
                     console.log(files[0]);
+                    console.log(root);
                 });
             }
         } else {
