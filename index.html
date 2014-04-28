@@ -47,9 +47,6 @@
                             rootId = file.id;
                         } else {
                             var parentId = file.parents[0].id;
-                            if (parentId = '0AoJoVonN_f8fdFJUUFRQQ05yTlVfd0VidGprbXpkWWc') {
-                                log('found top level item');
-                            }
                             if (!parents[parentId]) {
                                 parents[parentId] = [];
                             }
@@ -68,12 +65,14 @@
                                 });
                             }
                         });
+                        log("Added " + thisLevel.length + " items to parents");
                         lastAdded = thisLevel;
                     } while (lastAdded.length > 0);
                     log('got ' + files.length + ' files, with total qutoa used: ' + quotaBytes);
                     log('root ' + rootId);
                     console.log(files[0]);
                     console.log(root);
+                    console.log(parents);
                 });
             }
         } else {
@@ -99,17 +98,19 @@
                 var nextPageToken = resp.nextPageToken;
                 if (nextPageToken) {
                     request = gapi.client.drive.files.list({
-                        'pageToken': nextPageToken
+                        'pageToken': nextPageToken,
+                        'maxResults': 1000
                     });
                     log('making call with ' + result.length + 'items fetched, page token: ' + nextPageToken);
-                    request.maxResults = 1000;
                     retrievePageOfFiles(request, result);
                 } else {
                     callback(result);
                 }
             });
         }
-        var initialRequest = gapi.client.drive.files.list();
+        var initialRequest = gapi.client.drive.files.list({
+            'maxResults': 1000
+        });
         retrievePageOfFiles(initialRequest, []);
     }
     function log(item) {
