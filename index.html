@@ -47,6 +47,9 @@
                             rootId = file.id;
                         } else {
                             var parentId = file.parents[0].id;
+                            if (parentId = '0AoJoVonN_f8fdFJUUFRQQ05yTlVfd0VidGprbXpkWWc') {
+                                log('found top level item');
+                            }
                             if (!parents[parentId]) {
                                 parents[parentId] = [];
                             }
