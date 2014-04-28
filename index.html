@@ -100,8 +100,7 @@
                 if (nextPageToken) {
                     request = gapi.client.drive.files.list({
                         'pageToken': nextPageToken,
-                        'maxResults': 1000,
-                        'q': '"bwillard@gmail" in owners'
+                        'maxResults': 1000
                     });
                     log('making call with ' + result.length + 'items fetched, page token: ' + nextPageToken);
                     retrievePageOfFiles(request, result);
@@ -111,8 +110,7 @@
             });
         }
         var initialRequest = gapi.client.drive.files.list({
-            'maxResults': 1000,
-            'q': '"bwillard@gmail" in owners'
+            'maxResults': 1000
         });
         retrievePageOfFiles(initialRequest, []);
     }
