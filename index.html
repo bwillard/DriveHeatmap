@@ -44,11 +44,17 @@
                     $.each(files, function( index, file ) {
                         quotaBytes += Number(file.quotaBytesUsed);
                         if (file.parents == null || file.parents.length == 0) {
+                            console.log("empty parent root:" + file.id);
+                            console.log(file);
                             rootId = file.id;
                         } else {
                             var parentId = file.parents[0].id;
                             if (!parents[parentId]) {
                                 parents[parentId] = [];
+                                if (file.parents[0].isRoot) {
+                                    console.log("isRoot root:" + parentId);
+                                    console.log(file);
+                                }
                             }
                             parents[parentId].push({ id: file.id, size: Number(file.quotaBytesUsed), children: [], title: file.title });
                         }
