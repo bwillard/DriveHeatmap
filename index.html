@@ -75,7 +75,11 @@
                     console.log(files[0]);
                     console.log(root);
                     console.log(parents);
-                    google.setOnLoadCallback(function () { drawChart(parents) });
+                    if (isLoaded) {
+                        drawChart(parents);
+                    } else {
+                        google.setOnLoadCallback(function () { drawChart(parents) });
+                    }
                 });
             }
         } else {
@@ -141,7 +145,13 @@
     function log(item) {
         $('#logMessages').prepend('<li>' + item + '</li>');
     }
-    google.load("visualization", "1", { packages: ["treemap"] });
+    var isLoaded = false;
+    google.load("visualization", "1", {
+        packages: ["treemap"], callback: function () {
+            isLoaded = true;
+            log("viz loaded");
+        }
+    });
     </script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
