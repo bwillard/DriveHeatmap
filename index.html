@@ -119,7 +119,23 @@
         retrievePageOfFiles(initialRequest, []);
     }
     
-    function drawChart(data) {
+    function drawChart(rootId, data) {
+        var chartData = [];
+        chartData.push(['File Id', 'parent', 'size']);
+        chartData.push([rootId, null, 0]);
+        $.each(data, function (parent, children) {
+            $.each(children, function (index, file) {
+                chartData.push([file.id, parent, file.size]);
+            });
+        });
+        var tree = new google.visualization.TreeMap(document.getElementById('chart_div'));
+        tree.draw(data, {
+            minColor: '#f00',
+            midColor: '#ddd',
+            maxColor: '#0d0',
+            headerHeight: 15,
+            fontColor: 'black',
+            showScale: true});
     }
 
     function log(item) {
@@ -134,7 +150,8 @@
     <!--Add a file picker for the user to start the upload process -->
     <input type="button" id="scanDrive" style="display: none" value="Scan Drive"/>
     <input type="button" id="authorizeButton" style="display: none" value="Authorize" />
-
+    <hr />
+      <div id="chart_div"></div>
     <hr />
     Log:
     <ul id="logMessages">
