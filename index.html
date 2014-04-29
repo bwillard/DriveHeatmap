@@ -36,6 +36,7 @@
             gapi.client.load('drive', 'v2', function () {
                 scanDrive.style.display = 'block';
             });
+            google.load("visualization", "1", { packages: ["treemap"] });
             scanDrive.onclick = function () {
                 var quotaBytes = 0;
                 var parents = [];
@@ -74,6 +75,7 @@
                     console.log(files[0]);
                     console.log(root);
                     console.log(parents);
+                    google.setOnLoadCallback(function () { drawChart(parents) });
                 });
             }
         } else {
@@ -100,7 +102,8 @@
                 if (nextPageToken) {
                     request = gapi.client.drive.files.list({
                         'pageToken': nextPageToken,
-                        'maxResults': 1000
+                        'maxResults': 1000,
+                        'q': '"me" in owners'
                     });
                     log('making call with ' + result.length + 'items fetched, page token: ' + nextPageToken);
                     retrievePageOfFiles(request, result);
@@ -110,15 +113,21 @@
             });
         }
         var initialRequest = gapi.client.drive.files.list({
-            'maxResults': 1000
+            'maxResults': 1000,
+            'q': '"me" in owners'
         });
         retrievePageOfFiles(initialRequest, []);
     }
+    
+    function drawChart(data) {
+    }
+
     function log(item) {
         $('#logMessages').prepend('<li>' + item + '</li>');
     }
     </script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript" src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
   </head>
   <body>
