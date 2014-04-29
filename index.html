@@ -36,7 +36,6 @@
             gapi.client.load('drive', 'v2', function () {
                 scanDrive.style.display = 'block';
             });
-            google.load("visualization", "1", { packages: ["treemap"] });
             scanDrive.onclick = function () {
                 var quotaBytes = 0;
                 var parents = [];
@@ -125,6 +124,7 @@
     function log(item) {
         $('#logMessages').prepend('<li>' + item + '</li>');
     }
+    google.load("visualization", "1", { packages: ["treemap"] });
     </script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
