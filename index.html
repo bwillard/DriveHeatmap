@@ -76,9 +76,9 @@
                     console.log(root);
                     console.log(parents);
                     if (isLoaded) {
-                        drawChart(parents);
+                        drawChart(rootId, parents);
                     } else {
-                        google.setOnLoadCallback(function () { drawChart(parents) });
+                        google.setOnLoadCallback(function () { drawChart(rootId, parents) });
                     }
                 });
             }
