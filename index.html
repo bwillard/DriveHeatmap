@@ -39,7 +39,7 @@
             });
             scanDrive.onclick = function () {
                 var quotaBytes = 0;
-                var parents = [];
+                var parents = {};
                 var rootId;
                 retrieveAllFiles(function (files) {
                     $.each(files, function( index, file ) {
@@ -120,6 +120,7 @@
             'maxResults': 1000,
             'q': '"me" in owners'
         });
+        log("starting list");
         retrievePageOfFiles(initialRequest, []);
     }
     
