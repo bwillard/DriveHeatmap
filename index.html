@@ -58,7 +58,8 @@
                             filesById[fileObject.id] = fileObject;
                         }
                     });
-                    var root = { id: rootId, children: [], size: 0 };
+                    var root = { id: rootId, children: [], size: 0, title: 'My Drive' };
+                    filesById[rootId] = root;
                     var lastAdded = [root];
                     do {
                         var thisLevel = [];
