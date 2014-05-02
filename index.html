@@ -40,6 +40,7 @@
             scanDrive.onclick = function () {
                 var quotaBytes = 0;
                 var parents = {};
+                var filesById = {};
                 var rootId;
                 retrieveAllFiles(function (files) {
                     $.each(files, function( index, file ) {
@@ -52,7 +53,9 @@
                                     rootId = parentId;
                                 }
                             }
-                            parents[parentId].push({ id: file.id, size: Number(file.quotaBytesUsed), children: [], title: file.title });
+                            var fileObject = { id: file.id, size: Number(file.quotaBytesUsed), children: [], title: file.title };
+                            parents[parentId].push(fileObject);
+                            filesByid[fileObject.id] = fileObject;
                         }
                     });
                     var root = { id: rootId, children: [], size: 0 };
@@ -76,10 +79,9 @@
                     console.log(root);
                     console.log(parents);
                     if (isLoaded) {
-                        //drawChart(rootId, parents);
-                        drawChart(root);
+                        drawChart(root, filesByid);
                     } else {
-                        google.setOnLoadCallback(function () { drawChart(rootId, parents) });
+                        google.setOnLoadCallback(function () { drawChart(root, filesByid) });
                     }
                 });
             }
@@ -124,7 +126,7 @@
         retrievePageOfFiles(initialRequest, []);
     }
     
-    function drawChart(root) {
+    function drawChart(root, filesById) {
         var chartData = [];
         chartData.push(['File Id', 'parent', 'size']);
         addData(chartData, root, null);
@@ -132,8 +134,7 @@
 
         var showFullTooltip = function(row, size, value) {
             return '<div style="background:#fd9; padding:10px; border-style:solid">'
-                + chartData[row][0] + '<br>'
-                + row + '<br>'
+                + filesById[chartData[row][0]].title + '<br>'
                 + (size / 1024 / 1024).toLocaleString() + 'MB<br>'
                 + ' </div>';
         }
