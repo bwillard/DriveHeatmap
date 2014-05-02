@@ -127,12 +127,6 @@
     function drawChart(root) {
         var chartData = [];
         chartData.push(['File Id', 'parent', 'size']);
-        //chartData.push([rootId, null, 0]);
-        //$.each(data, function (parent, children) {
-        //    $.each(children, function (index, file) {
-        //        chartData.push([file.id, parent, file.size]);
-        //    });
-        //});
         addData(chartData, root, null);
         var tree = new google.visualization.TreeMap(document.getElementById('chart_div'));
         tree.draw(google.visualization.arrayToDataTable(chartData), {
@@ -141,7 +135,9 @@
             maxColor: '#0d0',
             headerHeight: 15,
             fontColor: 'black',
-            showScale: true});
+            showScale: true,
+            generateTooltip: showFullTooltip
+        });
     }
 
     function addData(data, item, parentId) {
@@ -151,6 +147,14 @@
                 addData(data, child, item.id);
             });
         }
+    }
+
+    function showFullTooltip(row, size, value) {
+        return '<div style="background:#fd9; padding:10px; border-style:solid">'
+            + row + '<br>'
+            + size + '<br>'
+            + value + '<br>'
+            +' </div>';
     }
 
     function log(item) {
