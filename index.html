@@ -132,11 +132,12 @@
         chartData.push(['File Id', 'parent', 'size']);
         addData(chartData, root, null);
         var tree = new google.visualization.TreeMap(document.getElementById('chart_div'));
-
+        chartData = google.visualization.arrayToDataTable(chartData);
         var showFullTooltip = function (row, size, value) {
-            var title = 'unknown-' + chartData[row - 1][0];
-            if (filesById[chartData[row - 1][0]]) {
-                title = filesById[chartData[row - 1][0]].title;
+            var data = chartData.getValue(row, 0);
+            var title = 'unknown-' + data;
+            if (filesById[data]) {
+                title = filesById[data].title;
             }
             return '<div style="background:#fd9; padding:10px; border-style:solid">'
                 + title + '<br>'
@@ -144,7 +145,7 @@
                 + ' </div>';
         }
 
-        tree.draw(google.visualization.arrayToDataTable(chartData), {
+        tree.draw(chartData, {
             minColor: '#f00',
             midColor: '#ddd',
             maxColor: '#0d0',
