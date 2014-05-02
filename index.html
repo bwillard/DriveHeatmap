@@ -134,7 +134,7 @@
             });
         });
         var tree = new google.visualization.TreeMap(document.getElementById('chart_div'));
-        tree.draw(chartData, {
+        tree.draw(google.visualization.arrayToDataTable(chartData), {
             minColor: '#f00',
             midColor: '#ddd',
             maxColor: '#0d0',
