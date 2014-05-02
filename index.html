@@ -70,7 +70,7 @@
                         log("Added " + thisLevel.length + " items to parents");
                         lastAdded = thisLevel;
                     } while (lastAdded.length > 0);
-                    log('got ' + files.length + ' files, with total qutoa used: ' + quotaBytes);
+                    log('got ' + files.length + ' files, with total qutoa used: ' + (quotaBytes / 1024 / 1024 / 1024).toLocaleString() + 'GB');
                     log('root ' + rootId);
                     console.log(files[0]);
                     console.log(root);
@@ -129,6 +129,15 @@
         chartData.push(['File Id', 'parent', 'size']);
         addData(chartData, root, null);
         var tree = new google.visualization.TreeMap(document.getElementById('chart_div'));
+
+        var showFullTooltip = function(row, size, value) {
+            return '<div style="background:#fd9; padding:10px; border-style:solid">'
+                + chartData[row][0] + '<br>'
+                + row + '<br>'
+                + (size / 1024 / 1024).toLocaleString() + 'MB<br>'
+                + ' </div>';
+        }
+
         tree.draw(google.visualization.arrayToDataTable(chartData), {
             minColor: '#f00',
             midColor: '#ddd',
@@ -147,14 +156,6 @@
                 addData(data, child, item.id);
             });
         }
-    }
-
-    function showFullTooltip(row, size, value) {
-        return '<div style="background:#fd9; padding:10px; border-style:solid">'
-            + row + '<br>'
-            + size + '<br>'
-            + value + '<br>'
-            +' </div>';
     }
 
     function log(item) {
