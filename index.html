@@ -55,7 +55,7 @@
                             parents[parentId].push({ id: file.id, size: Number(file.quotaBytesUsed), children: [], title: file.title });
                         }
                     });
-                    var root = { id: rootId, children: [] };
+                    var root = { id: rootId, children: [], size: 0 };
                     var lastAdded = [root];
                     do {
                         var thisLevel = [];
@@ -76,7 +76,8 @@
                     console.log(root);
                     console.log(parents);
                     if (isLoaded) {
-                        drawChart(rootId, parents);
+                        //drawChart(rootId, parents);
+                        drawChart(root);
                     } else {
                         google.setOnLoadCallback(function () { drawChart(rootId, parents) });
                     }
@@ -92,7 +93,6 @@
           };
         }
       }
-
 /**
   * Retrieve a list of File resources.
   *
@@ -124,15 +124,16 @@
         retrievePageOfFiles(initialRequest, []);
     }
     
-    function drawChart(rootId, data) {
+    function drawChart(root) {
         var chartData = [];
         chartData.push(['File Id', 'parent', 'size']);
-        chartData.push([rootId, null, 0]);
-        $.each(data, function (parent, children) {
-            $.each(children, function (index, file) {
-                chartData.push([file.id, parent, file.size]);
-            });
-        });
+        //chartData.push([rootId, null, 0]);
+        //$.each(data, function (parent, children) {
+        //    $.each(children, function (index, file) {
+        //        chartData.push([file.id, parent, file.size]);
+        //    });
+        //});
+        addData(charData, root, null);
         var tree = new google.visualization.TreeMap(document.getElementById('chart_div'));
         tree.draw(google.visualization.arrayToDataTable(chartData), {
             minColor: '#f00',
@@ -141,6 +142,15 @@
             headerHeight: 15,
             fontColor: 'black',
             showScale: true});
+    }
+
+    function addData(data, item, parentId) {
+        data.push([item.id, parentId, item.size]);
+        if (item.children) {
+            $.each(item.children, function (index, child) {
+                addData(data, child, item.id);
+            });
+        }
     }
 
     function log(item) {
