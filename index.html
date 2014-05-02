@@ -55,7 +55,7 @@
                             }
                             var fileObject = { id: file.id, size: Number(file.quotaBytesUsed), children: [], title: file.title };
                             parents[parentId].push(fileObject);
-                            filesByid[fileObject.id] = fileObject;
+                            filesById[fileObject.id] = fileObject;
                         }
                     });
                     var root = { id: rootId, children: [], size: 0 };
@@ -79,7 +79,7 @@
                     console.log(root);
                     console.log(parents);
                     if (isLoaded) {
-                        drawChart(root, filesByid);
+                        drawChart(root, filesById);
                     } else {
                         google.setOnLoadCallback(function () { drawChart(root, filesByid) });
                     }
